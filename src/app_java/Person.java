@@ -4,21 +4,33 @@ public abstract class Person {
     private String first_name; // Имя человека
     private String last_name; // Фамилия человека
 
-    public Person(){};
+    // Конструктор без параметров
+    public Person(){
+        this.first_name = "";
+        this.last_name = "";
+    };
+
+    //Конструтор с параметрами
     public Person(String first_name, String last_name){
-        setFirstName(first_name);
-        setLastName(last_name);
+        this.first_name = first_name;
+        this.last_name = last_name;
     }
 
-    public String getFirstName(){ // Метод получения имени человека
+    // Метод получения имени человека
+    public String getFirstName(){
         return first_name;
     }
-    public String getLastName() {// Метод получения фамилии человека
+
+    // Метод получения фамилии человека
+    public String getLastName() {
         return last_name;
     }
+
+    // Метод установки имени человека
     public void setFirstName(String first_name){
         this.first_name = first_name;
     }
+    // Метод установки фамилии человека
     public void setLastName(String last_name){
         this.last_name = last_name;
     }
