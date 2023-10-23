@@ -19,7 +19,7 @@ public class Car{
         this.country = "";
         this.year = 0;
         this.price = 0;
-        this.condition = TechnicalCondition.valueOf("");
+        this.condition = TechnicalCondition.NEW;
         this.quantity = 0;
 
     };
@@ -51,16 +51,17 @@ public class Car{
         System.out.print("Введите цену: ");
         setPrice(scanner.nextInt());
 
+        TechnicalCondition inputCondition = null;
         do {
             System.out.print("Введите состояние (NEW, USED, NEEDS_REPAIR, OUT_OF_SERVICE): ");
-            String input = scanner.next();
+            String conditionInput = scanner.next();
 
             try {
-                setCondition(TechnicalCondition.valueOf(input));
+                inputCondition = TechnicalCondition.valueOf(conditionInput);
             } catch (IllegalArgumentException e) {
                 System.out.println("Недопустимое состояние автомобиля. Попробуйте снова.");
             }
-        } while (condition == null);
+        } while (inputCondition == null);
 
         System.out.print("Введите количество: ");
         setQuantity(scanner.nextInt());
@@ -69,7 +70,7 @@ public class Car{
 
     // Метод для вывода информации об авто
     public void outCar() {
-        System.out.println("Марка и модель авто:" + getBrand_model());
+        System.out.println("Марка и модель авто: " + getBrand_model());
         System.out.println("Страна-производитель: " + getCountry());
         System.out.println("Год производства: " + getYear());
         System.out.println("Цена: " + getPrice());

@@ -28,7 +28,7 @@ public class Customer extends Person{
     }
 
     // Метод для ввода информации о покупателе
-    public void inputCustomer() {
+    public void inpCustomer() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Введите имя клиента: ");

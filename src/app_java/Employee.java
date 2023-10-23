@@ -59,7 +59,7 @@ public class Employee extends Person{
 
     // Метод для ввода информации о сотруднике
     public void outEmployee(){
-        System.out.println("Сотрудник:" + getFirstName() + " " +  getLastName());
+        System.out.println("Имя и фамилия: " + getFirstName() + " " +  getLastName());
         System.out.println("Должность: " + getPosition());
         System.out.println("Зарплата: " + getSalary());
     }
