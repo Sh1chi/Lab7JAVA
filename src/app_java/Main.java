@@ -23,6 +23,11 @@ public class Main {
             System.out.println("3 - Вывести информация об автомобилях");
             System.out.println("4 - Вывести полную информацию об автосалоне");
             System.out.println("5 - Оформление сделки");
+            System.out.println("6 - Вывести сделку");
+            System.out.println("7 - Добавить сотрудника");
+            System.out.println("8 - Добавить авто");
+            System.out.println("9 - Удалить сотрудника");
+            System.out.println("10 - Удалить авто");
             System.out.println("0 - Выход...");
 
             choice = scanner.nextInt();
@@ -43,6 +48,21 @@ public class Main {
                 case 5:
                     deal.inpDeal(dealership);
                     deal.outDeal();
+                    break;
+                case 6:
+                    deal.outDeal();
+                    break;
+                case 7:
+                    dealership.addEmployeesToDealership();
+                    break;
+                case 8:
+                    dealership.addCarsToDealership();
+                    break;
+                case 9:
+                    System.out.println("999");
+                    break;
+                case 10:
+                    System.out.println("101010");
                     break;
                 case 0:
                     System.out.println("Осуществляется выход...");

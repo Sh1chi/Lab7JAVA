@@ -45,6 +45,8 @@ public class Dealership {
         return employees;
     }
 
+    public void setEmployees(Employee[] newEmployees) { this.employees = newEmployees; }
+
     public Car[] getCars() {
         return cars;
     }
@@ -61,7 +63,16 @@ public class Dealership {
         // Ввод количества сотрудников и создание массива сотрудников
         System.out.print("Введите количество сотрудников: ");
         numEmployees = scanner.nextInt();
+        inpEmployee();
 
+
+        // Ввод количества автомобилей и создание массива автомобилей
+        System.out.print("Введите количество автомобилей: ");
+        numCars = scanner.nextInt();
+        inpCar();
+    }
+
+    public void inpEmployee(){
         System.out.println();
         System.out.println("  -- Ввод данных о сотрудниках --");
         for (int i = 0; i < numEmployees; ++i) {
@@ -70,11 +81,9 @@ public class Dealership {
             employees[i].inputEmployee();
             System.out.println();
         }
+    }
 
-        // Ввод количества автомобилей и создание массива автомобилей
-        System.out.print("Введите количество автомобилей: ");
-        numCars = scanner.nextInt();
-
+    public void inpCar(){
         System.out.println();
         System.out.println("  -- Ввод данных об автомобилях --");
         for (int i = 0; i < numCars; ++i) {
@@ -83,6 +92,90 @@ public class Dealership {
             cars[i].inputCar();
             System.out.println();
         }
+    }
+
+    public void addEmployeesToDealership() {
+        System.out.println("\n\t~~Добавление новых сотрудников в автосалон~~");
+        System.out.println("-------------------------------------------");
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Введите количество новых сотрудников: ");
+        int numNewEmployees = scanner.nextInt();
+
+        int newTotalEmployees = numEmployees + numNewEmployees;
+
+        // Получаем массив существующих сотрудников в автосалоне
+        Employee[] oldEmployees = getEmployees();
+
+        // Создаем временный массив, куда скопируем существующих сотрудников
+        Employee[] tempEmployees = new Employee[newTotalEmployees];
+
+        // Копируем существующих сотрудников во временный массив
+        System.arraycopy(oldEmployees, 0, tempEmployees, 0, numEmployees);
+
+        System.out.println("-------------------------------------------");
+
+        // Вводим и добавляем новых сотрудников во временный массив
+        for (int i = numEmployees; i < newTotalEmployees; ++i) {
+            // Ввод данных о сотруднике
+            System.out.println("Сотрудник #" + (i + 1));
+            Employee newEmployee = new Employee();  // Assuming Employee has a default constructor
+            newEmployee.inputEmployee();  // Assuming there's an inputEmployee method in the Employee class
+            System.out.println("-------------------------------------------");
+
+            // Добавляем нового сотрудника во временный массив
+            tempEmployees[i] = newEmployee;
+        }
+
+        // Обновляем количество сотрудников в автосалоне
+        numEmployees = newTotalEmployees;
+
+        // Обновляем массив сотрудников автосалона на новый временный массив
+        setEmployees(tempEmployees);
+
+    }
+
+
+    public void addCarsToDealership() {
+        System.out.println("\n\t~~Добавление новых автомобилей в автосалон~~");
+        System.out.println("-------------------------------------------");
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Введите количество новых автомобилей: ");
+        int numNewCars = scanner.nextInt();
+
+        int newTotalCars = numCars + numNewCars;
+
+        // Получаем массив существующих автомобилей в автосалоне
+        Car[] oldCars = getCars();
+
+        // Создаем временный массив, куда скопируем существующие автомобили
+        Car[] tempCars = new Car[newTotalCars];
+
+        // Копируем существующие автомобили во временный массив
+        System.arraycopy(oldCars, 0, tempCars, 0, numCars);
+
+        System.out.println("-------------------------------------------");
+
+        // Вводим и добавляем новые автомобили во временный массив
+        for (int i = numCars; i < newTotalCars; ++i) {
+            // Ввод данных об автомобиле
+            System.out.println("Автомобиль #" + (i + 1));
+            Car newCar = new Car();  // Assuming Car has a default constructor
+            newCar.inputCar();  // Assuming there's an inputCar method in the Car class
+            System.out.println("-------------------------------------------");
+
+            // Добавляем новый автомобиль во временный массив
+            tempCars[i] = newCar;
+        }
+
+        // Обновляем количество автомобилей в автосалоне
+        numCars = newTotalCars;
+
+        // Обновляем массив автомобилей автосалона на новый временный массив
+        cars = tempCars;
     }
 
     public void outAllInfoDealership(){
