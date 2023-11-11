@@ -45,8 +45,6 @@ public class Dealership {
         return employees;
     }
 
-    public void setEmployees(Employee[] newEmployees) { this.employees = newEmployees; }
-
     public Car[] getCars() {
         return cars;
     }
@@ -63,16 +61,6 @@ public class Dealership {
         // Ввод количества сотрудников и создание массива сотрудников
         System.out.print("Введите количество сотрудников: ");
         numEmployees = scanner.nextInt();
-        inpEmployee();
-
-
-        // Ввод количества автомобилей и создание массива автомобилей
-        System.out.print("Введите количество автомобилей: ");
-        numCars = scanner.nextInt();
-        inpCar();
-    }
-
-    public void inpEmployee(){
         System.out.println();
         System.out.println("  -- Ввод данных о сотрудниках --");
         for (int i = 0; i < numEmployees; ++i) {
@@ -81,18 +69,21 @@ public class Dealership {
             employees[i].inputEmployee();
             System.out.println();
         }
+
+
+        // Ввод количества автомобилей и создание массива автомобилей
+        System.out.print("Введите количество автомобилей: ");
+        numCars = scanner.nextInt();
+            System.out.println();
+            System.out.println("  -- Ввод данных об автомобилях --");
+            for (int i = 0; i < numCars; ++i) {
+                System.out.println("Автомобиль #" + (i + 1) + ":");
+                cars[i] = new Car();
+                cars[i].inputCar();
+                System.out.println();
+            }
     }
 
-    public void inpCar(){
-        System.out.println();
-        System.out.println("  -- Ввод данных об автомобилях --");
-        for (int i = 0; i < numCars; ++i) {
-            System.out.println("Автомобиль #" + (i + 1) + ":");
-            cars[i] = new Car();
-            cars[i].inputCar();
-            System.out.println();
-        }
-    }
 
     public void addEmployeesToDealership() {
         System.out.println("\n\t~~Добавление новых сотрудников в автосалон~~");
@@ -106,7 +97,7 @@ public class Dealership {
         int newTotalEmployees = numEmployees + numNewEmployees;
 
         // Получаем массив существующих сотрудников в автосалоне
-        Employee[] oldEmployees = getEmployees();
+        Employee[] oldEmployees = employees;
 
         // Создаем временный массив, куда скопируем существующих сотрудников
         Employee[] tempEmployees = new Employee[newTotalEmployees];
@@ -132,10 +123,9 @@ public class Dealership {
         numEmployees = newTotalEmployees;
 
         // Обновляем массив сотрудников автосалона на новый временный массив
-        setEmployees(tempEmployees);
+        employees = tempEmployees;
 
     }
-
 
     public void addCarsToDealership() {
         System.out.println("\n\t~~Добавление новых автомобилей в автосалон~~");
@@ -149,7 +139,7 @@ public class Dealership {
         int newTotalCars = numCars + numNewCars;
 
         // Получаем массив существующих автомобилей в автосалоне
-        Car[] oldCars = getCars();
+        Car[] oldCars = cars;
 
         // Создаем временный массив, куда скопируем существующие автомобили
         Car[] tempCars = new Car[newTotalCars];
@@ -177,6 +167,61 @@ public class Dealership {
         // Обновляем массив автомобилей автосалона на новый временный массив
         cars = tempCars;
     }
+
+    public void removeEmployeeFromDealership() {
+        outEmployeesChoice();
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Введите номер сотрудника, которого вы хотите удалить: ");
+        int employeeIndex = scanner.nextInt();
+
+        if (employeeIndex < 1 || employeeIndex > numEmployees) {
+            System.out.println("Недопустимый номер сотрудника. Удаление не выполнено.");
+            return;
+        }
+
+        // Удаляем выбранного сотрудника путем сдвига оставшихся элементов
+        for (int i = employeeIndex - 1; i < numEmployees - 1; ++i) {
+            employees[i] = employees[i + 1];
+        }
+
+        // Обнуляем значение последнего элемента
+        employees[numEmployees - 1] = null;
+
+        // Уменьшаем общее количество сотрудников в автосалоне
+        numEmployees--;
+
+        System.out.println("Сотрудник удален из автосалона.");
+    }
+
+    public void removeCarFromDealership() {
+        outCarsChoice();
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Введите номер автомобиля, который вы хотите удалить: ");
+        int carIndex = scanner.nextInt();
+
+        if (carIndex < 1 || carIndex > numCars) {
+            System.out.println("Недопустимый номер автомобиля. Удаление не выполнено.");
+            return;
+        }
+
+        // Удаляем выбранный автомобиль путем сдвига оставшихся элементов
+        for (int i = carIndex - 1; i < numCars - 1; ++i) {
+            cars[i] = cars[i + 1];
+        }
+
+        // Обнуляем значение последнего элемента
+        cars[numCars - 1] = null;
+
+        // Уменьшаем общее количество автомобилей в автосалоне
+        numCars--;
+
+        System.out.println("Автомобиль удален из автосалона.");
+    }
+
 
     public void outAllInfoDealership(){
         System.out.println();
