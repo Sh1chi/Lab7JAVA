@@ -2,6 +2,8 @@ package app_java;
 
 import java.util.Scanner;
 
+import static app_java.Func.*;
+
 public class Dealership {
     private static final int MAX_EMPLOYEE = 100; // max сотрудников
     private static final int MAX_CARS = 100; // max авто
@@ -24,6 +26,10 @@ public class Dealership {
         this.name = name;
         this.address = address;
     }
+
+    public static int getNumEmployees(){return numEmployees;}
+
+    public static int getNumCars(){return numCars;}
 
     public String getName() {
         return name;
@@ -49,31 +55,51 @@ public class Dealership {
         return cars;
     }
 
-    public void inputDealership() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("    __-- Создание автосалона --__");
-        // Ввод данных об автосалоне
-        System.out.print("Введите название автосалона: ");
-        name = scanner.nextLine();
-        System.out.print("Введите адрес автосалона: ");
-        address = scanner.nextLine();
+    public boolean isDealershipCreated() {
+        return (name != null && !name.isEmpty()) || (address != null && !address.isEmpty());
+    }
 
-        // Ввод количества сотрудников и создание массива сотрудников
-        System.out.print("Введите количество сотрудников: ");
-        numEmployees = scanner.nextInt();
-        System.out.println();
-        System.out.println("  -- Ввод данных о сотрудниках --");
-        for (int i = 0; i < numEmployees; ++i) {
-            System.out.println("Сотрудник #" + (i + 1) + ":");
-            employees[i] = new Employee();
-            employees[i].inputEmployee();
-            System.out.println();
+    public void inputDealership() {
+        if (isDealershipCreated()) {
+            System.out.println("Автосалон уже существует.");
+            if (!confirmAction("При пересоздании все предыдущие данные будут удалены.\nХотите продолжить? (Да/Нет): ")) {
+                return;
+            }
         }
 
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("    __-- Создание автосалона --__");
+
+        do {
+            // Ввод данных об автосалоне
+            System.out.print("Введите название автосалона: ");
+            name = scanner.nextLine();
+            System.out.print("Введите адрес автосалона: ");
+            address = scanner.nextLine();
+
+            if (!isDealershipCreated()){
+                System.out.println("Ошибка: 'Некорректные данные'!");
+                continue;
+            }
+            break;
+        }while(true);
+
+        // Ввод количества сотрудников и создание массива сотрудников
+        numEmployees = InpAndCheckedInt("Введите количество сотрудников: ");
+        if (numEmployees != 0) {
+            System.out.println();
+            System.out.println("  -- Ввод данных о сотрудниках --");
+            for (int i = 0; i < numEmployees; ++i) {
+                System.out.println("Сотрудник #" + (i + 1) + ":");
+                employees[i] = new Employee();
+                employees[i].inputEmployee();
+                System.out.println();
+            }
+        }
 
         // Ввод количества автомобилей и создание массива автомобилей
-        System.out.print("Введите количество автомобилей: ");
-        numCars = scanner.nextInt();
+        numCars = InpAndCheckedInt("Введите количество автомобилей: ");
+        if (numCars != 0) {
             System.out.println();
             System.out.println("  -- Ввод данных об автомобилях --");
             for (int i = 0; i < numCars; ++i) {
@@ -82,54 +108,63 @@ public class Dealership {
                 cars[i].inputCar();
                 System.out.println();
             }
+        }
+
     }
 
 
     public void addEmployeesToDealership() {
-        System.out.println("\n\t~~Добавление новых сотрудников в автосалон~~");
-        System.out.println("-------------------------------------------");
-
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Введите количество новых сотрудников: ");
-        int numNewEmployees = scanner.nextInt();
-
-        int newTotalEmployees = numEmployees + numNewEmployees;
-
-        // Получаем массив существующих сотрудников в автосалоне
-        Employee[] oldEmployees = employees;
-
-        // Создаем временный массив, куда скопируем существующих сотрудников
-        Employee[] tempEmployees = new Employee[newTotalEmployees];
-
-        // Копируем существующих сотрудников во временный массив
-        System.arraycopy(oldEmployees, 0, tempEmployees, 0, numEmployees);
-
-        System.out.println("-------------------------------------------");
-
-        // Вводим и добавляем новых сотрудников во временный массив
-        for (int i = numEmployees; i < newTotalEmployees; ++i) {
-            // Ввод данных о сотруднике
-            System.out.println("Сотрудник #" + (i + 1));
-            Employee newEmployee = new Employee();  // Assuming Employee has a default constructor
-            newEmployee.inputEmployee();  // Assuming there's an inputEmployee method in the Employee class
-            System.out.println("-------------------------------------------");
-
-            // Добавляем нового сотрудника во временный массив
-            tempEmployees[i] = newEmployee;
+        if (!isDealershipCreated()) {
+            System.out.println("Ошибка: 'Автосалон отсутствует'!\nПожалуйста, создайте автосалон перед добавлением сотрудников.");
+            return;
         }
 
-        // Обновляем количество сотрудников в автосалоне
-        numEmployees = newTotalEmployees;
+            System.out.println("  -- Добавление новых сотрудников в автосалон --");
 
-        // Обновляем массив сотрудников автосалона на новый временный массив
-        employees = tempEmployees;
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.print("Введите количество новых сотрудников: ");
+            int numNewEmployees = scanner.nextInt();
+
+            int newTotalEmployees = numEmployees + numNewEmployees;
+
+            // Получаем массив существующих сотрудников в автосалоне
+            Employee[] oldEmployees = employees;
+
+            // Создаем временный массив, куда скопируем существующих сотрудников
+            Employee[] tempEmployees = new Employee[newTotalEmployees];
+
+            // Копируем существующих сотрудников во временный массив
+            System.arraycopy(oldEmployees, 0, tempEmployees, 0, numEmployees);
+
+            System.out.println();
+            // Вводим и добавляем новых сотрудников во временный массив
+            for (int i = numEmployees; i < newTotalEmployees; ++i) {
+                // Ввод данных о сотруднике
+                System.out.println("Сотрудник #" + (i + 1));
+                Employee newEmployee = new Employee();  // Assuming Employee has a default constructor
+                newEmployee.inputEmployee();  // Assuming there's an inputEmployee method in the Employee class
+                System.out.println();
+
+                // Добавляем нового сотрудника во временный массив
+                tempEmployees[i] = newEmployee;
+            }
+
+            // Обновляем количество сотрудников в автосалоне
+            numEmployees = newTotalEmployees;
+
+            // Обновляем массив сотрудников автосалона на новый временный массив
+            employees = tempEmployees;
 
     }
 
     public void addCarsToDealership() {
-        System.out.println("\n\t~~Добавление новых автомобилей в автосалон~~");
-        System.out.println("-------------------------------------------");
+        if (!isDealershipCreated()) {
+            System.out.println("Ошибка: 'Автосалон отсутствует'!\nПожалуйста, создайте автосалон перед добавлением автомобилей.");
+            return;
+        }
+
+        System.out.println("  --  Добавление новых автомобилей в автосалон --");
 
         Scanner scanner = new Scanner(System.in);
 
@@ -147,15 +182,15 @@ public class Dealership {
         // Копируем существующие автомобили во временный массив
         System.arraycopy(oldCars, 0, tempCars, 0, numCars);
 
-        System.out.println("-------------------------------------------");
 
+        System.out.println();
         // Вводим и добавляем новые автомобили во временный массив
         for (int i = numCars; i < newTotalCars; ++i) {
             // Ввод данных об автомобиле
             System.out.println("Автомобиль #" + (i + 1));
             Car newCar = new Car();  // Assuming Car has a default constructor
             newCar.inputCar();  // Assuming there's an inputCar method in the Car class
-            System.out.println("-------------------------------------------");
+            System.out.println();
 
             // Добавляем новый автомобиль во временный массив
             tempCars[i] = newCar;
@@ -169,17 +204,25 @@ public class Dealership {
     }
 
     public void removeEmployeeFromDealership() {
+        System.out.print("  -- Удаление сотрудника из базы --\n");
+
+        if (numEmployees == 0) {
+            System.out.println("В дилерском центре отсутствуют сотрудники.");
+            return;
+        }
+
         outEmployeesChoice();
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Введите номер сотрудника, которого вы хотите удалить: ");
-        int employeeIndex = scanner.nextInt();
+        int employeeIndex;
+        do {
+            employeeIndex = InpAndCheckedInt("Введите номер сотрудника, которого вы хотите удалить: ");
 
-        if (employeeIndex < 1 || employeeIndex > numEmployees) {
-            System.out.println("Недопустимый номер сотрудника. Удаление не выполнено.");
-            return;
-        }
+            if (employeeIndex < 1 || employeeIndex > numEmployees) {
+                System.out.println("Ошибка: 'Недопустимый номер сотрудника'!");
+            }
+        } while (employeeIndex > numEmployees);
 
         // Удаляем выбранного сотрудника путем сдвига оставшихся элементов
         for (int i = employeeIndex - 1; i < numEmployees - 1; ++i) {
@@ -196,17 +239,25 @@ public class Dealership {
     }
 
     public void removeCarFromDealership() {
+        System.out.print("  -- Удаление авто из базы --\n");
+
+        if (numCars == 0) {
+            System.out.println("В дилерском центре отсутствуют автомобили.");
+            return;
+        }
+
         outCarsChoice();
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Введите номер автомобиля, который вы хотите удалить: ");
-        int carIndex = scanner.nextInt();
+        int carIndex;
+        do {
+            carIndex = InpAndCheckedInt("Введите номер автомобиля, который вы хотите удалить: ");
 
-        if (carIndex < 1 || carIndex > numCars) {
-            System.out.println("Недопустимый номер автомобиля. Удаление не выполнено.");
-            return;
-        }
+            if (carIndex < 1 || carIndex > numCars) {
+                System.out.println("Ошибка: 'Недопустимый номер автомобиля'!");
+            }
+        } while (carIndex > numCars);
 
         // Удаляем выбранный автомобиль путем сдвига оставшихся элементов
         for (int i = carIndex - 1; i < numCars - 1; ++i) {
@@ -225,20 +276,21 @@ public class Dealership {
 
     public void outAllInfoDealership(){
         System.out.println();
-        if ((name != null && !name.isEmpty()) || (address != null && !address.isEmpty())) {
+        if (isDealershipCreated()) {
             System.out.println("    __-- Автосалон " + name + " --__");
             System.out.println("по адресу: " + address);
+            System.out.println();
             outEmployeeDealership();
             outCarDealership();
         } else {
-            System.out.println("Информация об автосалоне недоступна, так как отсутствует название или адрес.");
+            System.out.println("Ошибка: 'Отсутствует название или адрес автосалона'!\nИнформация об автосалоне недоступна.");
         }
     }
 
     public void outEmployeeDealership() {
         if (numEmployees == 0) {
             System.out.println("    __-- Сотрудники автосалона --__");
-            System.out.println("В дилерском центре отсутствуют сотрудники.");
+            System.out.println("В дилерском центре отсутствуют сотрудники.\n");
         } else {
             System.out.println("    __-- Сотрудники автосалона " + name + " --__");
             for (int i = 0; i < numEmployees; ++i) {
@@ -252,7 +304,7 @@ public class Dealership {
     public void outCarDealership(){
         if (numCars == 0) {
             System.out.println("    __-- Автомобили автосалона --__");
-            System.out.println("В дилерском центре отсутствуют автомобили.");
+            System.out.println("В дилерском центре отсутствуют автомобили.\n");
         } else {
             System.out.println("    __-- Автомобили автосалона " + name + " --__");
             for (int i = 0; i < numCars; ++i) {
@@ -267,14 +319,14 @@ public class Dealership {
     public void outCarsChoice() {
         System.out.println("Автомобили в наличии:");
         for (int i = 0; i < numCars; i++) {
-            System.out.println((i + 1) + ") " + cars[i].getBrand_model());
+            System.out.println("    " + (i + 1) + ") " + cars[i].getBrand_model()+ " - " + cars[i].getPrice());
         }
     }
 
     public void outEmployeesChoice() {
         System.out.println("Список продавцов:");
         for (int i = 0; i < numEmployees; i++) {
-            System.out.println((i + 1) + ") " + employees[i].getFirstName() + " " + employees[i].getLastName());
+            System.out.println("    " + (i + 1) + ") " + employees[i].getFirstName() + " " + employees[i].getLastName() + " - " + employees[i].getPosition());
         }
     }
 

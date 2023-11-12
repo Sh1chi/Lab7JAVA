@@ -2,8 +2,11 @@ package app_java;
 
 import java.util.Scanner;
 
+import static app_java.Func.confirmAction;
+
 public class Deal {
-    private int deal_number;          // Номер сделки
+    private static int deal_number = 0;
+    private int transaction_code;          // Номер сделки
     private String date;              // Дата сделки
     private Employee employee;         // Продавец
     private Customer customer;          // Покупатель
@@ -12,7 +15,7 @@ public class Deal {
 
     public Deal() {
         // Инициализация объекта Deal без параметров
-        this.deal_number = 0;
+        this.transaction_code = 0;
         this.date = "";
         this.employee = null;
         this.customer = null;
@@ -20,12 +23,21 @@ public class Deal {
         this.transaction_amount = 0;
     }
 
+    private static int generateDealNumber() {
+        return deal_number++;
+    }
+
+    // Метод для получения заработка автосалона по текущей сделке
+    public int getProfit() {
+        return CarSaleCalculator.calculateProfit(transaction_amount);
+    }
+
     public int getDeal_number() {
-        return deal_number;
+        return transaction_code;
     }
 
     public void setDeal_number(int deal_number) {
-        this.deal_number = deal_number;
+        this.transaction_code = deal_number;
     }
 
     public String getDate() {
@@ -68,13 +80,34 @@ public class Deal {
         this.transaction_amount = transaction_amount;
     }
 
-    public void inpDeal(Dealership dealership) {
+    public void inpDeal(Dealership dealership, Deal[] dealsArray) {
         Scanner scanner = new Scanner(System.in);
+        // Проверка наличия созданного автосалона
+        if (!dealership.isDealershipCreated()) {
+            System.out.println("Ошибка: 'Автосалон отсутствует'!\nПожалуйста, создайте автосалон перед оформлением сделки.");
+            return;
+        }
+
+        // Проверка наличия сотрудников
+        if (Dealership.getNumEmployees() == 0) {
+            System.out.println("Ошибка: 'Сотрудники отсутствуют'!\nПожалуйста, добавьте сотрудников перед оформлением сделки.");
+            return;
+        }
+
+        // Проверка наличия автомобилей
+        if (Dealership.getNumCars() == 0) {
+            System.out.println("Ошибка: 'Автомобили отсутствуют'!\nПожалуйста, добавьте автомобили перед оформлением сделки.");
+            return;
+        }
 
         System.out.println();
         System.out.println("    -- Производится оформление договора купли-продажи авто --");
-        System.out.print("Введите номер сделки: ");
-        deal_number = scanner.nextInt();
+
+        // Используйте статический метод для генерации уникального номера сделки
+        generateDealNumber();
+
+        System.out.print("Введите код сделки: ");
+        transaction_code = scanner.nextInt();
         scanner.nextLine(); // Очистить буфер после ввода числа
 
         System.out.print("Введите дату сделки: ");
@@ -87,10 +120,10 @@ public class Deal {
         do {
             System.out.print("Выберите номер продавца из списка: ");
             employeeChoice = scanner.nextInt();
-            if (employeeChoice < 1 || employeeChoice > dealership.getEmployees().length) {
+            if (employeeChoice < 1 || employeeChoice > Dealership.getNumEmployees()) {
                 System.out.println("Неверная команда...");
             }
-        } while (employeeChoice < 1 || employeeChoice > dealership.getEmployees().length);
+        } while (employeeChoice < 1 || employeeChoice > Dealership.getNumEmployees());
 
         employee = dealership.getEmployees()[employeeChoice - 1];
 
@@ -105,28 +138,79 @@ public class Deal {
         do {
             System.out.print("Выберите номер автомобиля из списка: ");
             carChoice = scanner.nextInt();
-            if (carChoice < 1 || carChoice > dealership.getCars().length) {
+            if (carChoice < 1 || carChoice > Dealership.getNumCars()) {
                 System.out.println("Неверная команда...");
             }
-        } while (carChoice < 1 || carChoice > dealership.getCars().length);
+        } while (carChoice < 1 || carChoice > Dealership.getNumCars());
 
         car = dealership.getCars()[carChoice - 1];
 
         System.out.print("Введите сумму сделки: ");
         transaction_amount = scanner.nextInt();
         scanner.nextLine(); // Очистить буфер после ввода числа
+
+        // Добавление сделки в массив сделок
+        for (int i = 0; i < deal_number; i++) {
+            if (dealsArray[i] == null) {
+                dealsArray[i] = this;
+                break;
+            }
+        }
     }
 
-    public void outDeal() {
+
+    // Метод для очистки массива сделок
+    public static void clearDealsArray(Deal[] dealsArray) {
+        if (!confirmAction("Вы точно хотите удалить историю сделок? (Да/Нет)")) {
+            System.out.println("Удаление отменено.");
+            return;
+        }
+
+        for (int i = 0; i < deal_number; i++) {
+            dealsArray[i] = null;
+        }
+        deal_number = 0;
+        CarSaleCalculator.setTotalProfit(0);
+        System.out.println("История сделок очищена.");
+    }
+
+    // Метод для вывода заработка по каждой сделке и общего заработка
+    public static void printProfits(Deal[] dealsArray) {
         System.out.println();
-        System.out.println("    __-- Договор купли-продажи авто --__");
-        System.out.println("Cделки # " + getDeal_number());
-        System.out.println("Дата сделки: " + getDate());
-        System.out.println("Продавец: " + getEmployee().getFirstName() + " " + getEmployee().getLastName());
-        System.out.println("Покупатель: " + getCustomer().getFirstName() + " " + getCustomer().getLastName());
-        System.out.println("Проданный автомобиль: " + getCar().getBrand_model());
-        System.out.println("Сумма сделки: " + getTransaction_amount());
+        System.out.println("    __-- Заработок автосалона --__");
+
+        for (int i = 0; i < deal_number; i++) {
+            Deal deal = dealsArray[i];
+            if (deal != null) {
+                int profit = CarSaleCalculator.calculateProfit(deal.getTransaction_amount());
+                System.out.println("Cделка #" + deal.getDeal_number() + ": " + profit);
+                CarSaleCalculator.addToTotalProfit(deal.getTransaction_amount());
+            }
+        }
+        int total_profit = CarSaleCalculator.getTotalProfit();
         System.out.println();
+        System.out.println("Общий заработок автосалона: " + total_profit);
+    }
+
+    public void outAllDeals(Deal[] dealsArray) {
+        System.out.println();
+        System.out.println("    __-- Договоры купли-продажи авто --__");
+
+        if (deal_number == 0){
+            System.out.println("История сделок отсутствует.");
+        }
+        for (int i = 0; i < deal_number; i++) {
+            Deal deal = dealsArray[i];
+            if (deal != null) {
+                System.out.println("Cделка #" + deal.getDeal_number());
+                System.out.println("Дата сделки: " + deal.getDate());
+                System.out.println("Продавец: " + deal.getEmployee().getFirstName() + " " + deal.getEmployee().getLastName());
+                System.out.println("Покупатель: " + deal.getCustomer().getFirstName() + " " + deal.getCustomer().getLastName());
+                System.out.println("Проданный автомобиль: " + deal.getCar().getBrand_model());
+                System.out.println("Сумма сделки: " + deal.getTransaction_amount());
+                System.out.println();
+            }
+        }
     }
 
 }
