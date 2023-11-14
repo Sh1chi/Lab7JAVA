@@ -23,7 +23,7 @@ public class Main {
         do {
             System.out.println(" -- Главное меню --");
             System.out.println("1 - Создать автосалон");
-            System.out.println("2 - Оформление сделки");
+            System.out.println("2 - Оформить сделку");
             System.out.println("3 - Добавить сотрудника");
             System.out.println("4 - Добавить авто");
             System.out.println("5 - Удалить сотрудника");

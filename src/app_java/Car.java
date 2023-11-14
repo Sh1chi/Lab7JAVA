@@ -2,10 +2,11 @@ package app_java;
 
 import java.util.Scanner;
 
-public class Car{
+public class Car {
     enum TechnicalCondition {
         NEW, USED, NEEDS_REPAIR, OUT_OF_SERVICE
     }
+
     private String brand_model;
     private String country;
     private int year;
@@ -14,7 +15,7 @@ public class Car{
     private int quantity;
 
     // Конструктор без параметров
-    public Car(){
+    public Car() {
         this.brand_model = "";
         this.country = "";
         this.year = 0;
@@ -22,10 +23,10 @@ public class Car{
         this.condition = TechnicalCondition.NEW;
         this.quantity = 0;
 
-    };
+    }
 
     //Конструтор с параметрами
-    public Car(String brand_model, String country, int year, int price, TechnicalCondition condition, int quantity){
+    public Car(String brand_model, String country, int year, int price, TechnicalCondition condition, int quantity) {
         this.brand_model = brand_model;
         this.country = country;
         this.year = year;
@@ -35,49 +36,7 @@ public class Car{
 
     }
 
-    // Метод для ввода информации об авто
-    public void inputCar() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Введите марку и модель авто: ");
-        setBrand_model(scanner.nextLine());
-
-        System.out.print("Введите страну-производитель: ");
-        setCountry(scanner.nextLine());
-
-        System.out.print("Введите год производства: ");
-        setYear(scanner.nextInt());
-
-        System.out.print("Введите цену: ");
-        setPrice(scanner.nextInt());
-
-        TechnicalCondition inputCondition = null;
-        do {
-            System.out.print("Введите состояние (NEW, USED, NEEDS_REPAIR, OUT_OF_SERVICE): ");
-            String conditionInput = scanner.next();
-
-            try {
-                inputCondition = TechnicalCondition.valueOf(conditionInput);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Недопустимое состояние автомобиля. Попробуйте снова.");
-            }
-        } while (inputCondition == null);
-
-        System.out.print("Введите количество: ");
-        setQuantity(scanner.nextInt());
-
-    }
-
-    // Метод для вывода информации об авто
-    public void outCar() {
-        System.out.println("Марка и модель авто: " + getBrand_model());
-        System.out.println("Страна-производитель: " + getCountry());
-        System.out.println("Год производства: " + getYear());
-        System.out.println("Цена: " + getPrice());
-        System.out.println("Техническое состояние: " + getCondition());
-        System.out.println("Количество: " + getQuantity());
-    }
-
+    //set и get
     public String getBrand_model() {
         return brand_model;
     }
@@ -124,5 +83,48 @@ public class Car{
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    // Метод для ввода информации об авто
+    public void inputCar() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Введите марку и модель авто: ");
+        setBrand_model(scanner.nextLine());
+
+        System.out.print("Введите страну-производитель: ");
+        setCountry(scanner.nextLine());
+
+        System.out.print("Введите год производства: ");
+        setYear(scanner.nextInt());
+
+        System.out.print("Введите цену: ");
+        setPrice(scanner.nextInt());
+
+        TechnicalCondition inputCondition = null;
+        do {
+            System.out.print("Введите состояние (NEW, USED, NEEDS_REPAIR, OUT_OF_SERVICE): ");
+            String conditionInput = scanner.next();
+
+            try {
+                inputCondition = TechnicalCondition.valueOf(conditionInput);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Недопустимое состояние автомобиля. Попробуйте снова.");
+            }
+        } while (inputCondition == null);
+
+        System.out.print("Введите количество: ");
+        setQuantity(scanner.nextInt());
+
+    }
+
+    // Метод для вывода информации об авто
+    public void outCar() {
+        System.out.println("Марка и модель авто: " + getBrand_model());
+        System.out.println("Страна-производитель: " + getCountry());
+        System.out.println("Год производства: " + getYear());
+        System.out.println("Цена: " + getPrice());
+        System.out.println("Техническое состояние: " + getCondition());
+        System.out.println("Количество: " + getQuantity());
     }
 }

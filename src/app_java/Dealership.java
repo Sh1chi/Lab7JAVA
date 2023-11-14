@@ -62,7 +62,7 @@ public class Dealership {
     public void inputDealership() {
         if (isDealershipCreated()) {
             System.out.println("Автосалон уже существует.");
-            if (!confirmAction("При пересоздании все предыдущие данные будут удалены.\nХотите продолжить? (Да/Нет): ")) {
+            if (!confirmAction("При пересоздании все предыдущие данные будут удалены.\nХотите продолжить? (Да/Нет)")) {
                 return;
             }
         }
