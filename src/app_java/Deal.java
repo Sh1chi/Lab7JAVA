@@ -80,6 +80,7 @@ public class Deal {
         this.transaction_amount = transaction_amount;
     }
 
+    // Метод ввода сделки
     public void inpDeal(Dealership dealership, Deal[] dealsArray) {
         Scanner scanner = new Scanner(System.in);
         // Проверка наличия созданного автосалона
@@ -192,6 +193,7 @@ public class Deal {
         System.out.println("Общий заработок автосалона: " + total_profit);
     }
 
+    // Метод вывода сделки
     public void outAllDeals(Deal[] dealsArray) {
         System.out.println();
         System.out.println("    __-- Договоры купли-продажи авто --__");

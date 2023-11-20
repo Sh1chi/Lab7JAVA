@@ -5,7 +5,6 @@ public class CarSaleCalculator {
 
     // Метод для вычисления заработка автосалона по текущей сделке
     public static int calculateProfit(int transactionAmount) {
-        // Здесь можно внести необходимые расчеты, например, добавить 5% наценки
         double markupPercentage = 0.05;
         double profit = transactionAmount * markupPercentage;
 

@@ -7,12 +7,12 @@ public class Car {
         NEW, USED, NEEDS_REPAIR, OUT_OF_SERVICE
     }
 
-    private String brand_model;
-    private String country;
-    private int year;
-    private int price;
-    private TechnicalCondition condition;
-    private int quantity;
+    private String brand_model; // Модель
+    private String country; // Страна-производитель
+    private int year; // Год производства
+    private int price; // Цена
+    private TechnicalCondition condition; // Техническое состояние
+    private int quantity; // Количество
 
     // Конструктор без параметров
     public Car() {

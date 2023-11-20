@@ -59,6 +59,7 @@ public class Dealership {
         return (name != null && !name.isEmpty()) || (address != null && !address.isEmpty());
     }
 
+    // Метод ввода автосалона
     public void inputDealership() {
         if (isDealershipCreated()) {
             System.out.println("Автосалон уже существует.");
@@ -112,7 +113,7 @@ public class Dealership {
 
     }
 
-
+    // Методы добавления сотрудников и авто
     public void addEmployeesToDealership() {
         if (!isDealershipCreated()) {
             System.out.println("Ошибка: 'Автосалон отсутствует'!\nПожалуйста, создайте автосалон перед добавлением сотрудников.");
@@ -203,6 +204,7 @@ public class Dealership {
         cars = tempCars;
     }
 
+    // Методы удаления сотрудников и авто
     public void removeEmployeeFromDealership() {
         System.out.print("  -- Удаление сотрудника из базы --\n");
 
@@ -273,7 +275,7 @@ public class Dealership {
         System.out.println("Автомобиль удален из автосалона.");
     }
 
-
+    // Методы вывода различной информации об автосалоне
     public void outAllInfoDealership(){
         System.out.println();
         if (isDealershipCreated()) {
@@ -316,6 +318,7 @@ public class Dealership {
         System.out.println();
     }
 
+    // Методы вывода выпадающего списка выбора
     public void outCarsChoice() {
         System.out.println("Автомобили в наличии:");
         for (int i = 0; i < numCars; i++) {
