@@ -2,7 +2,7 @@ package app_java;
 
 import java.util.Scanner;
 
-import static app_java.Func.confirmAction;
+import static app_java.Func.*;
 
 public class Deal {
     private static int deal_number = 0;
@@ -27,17 +27,21 @@ public class Deal {
         return deal_number++;
     }
 
+    public static int getDealNumber() {
+        return deal_number;
+    }
+
     // Метод для получения заработка автосалона по текущей сделке
     public int getProfit() {
         return CarSaleCalculator.calculateProfit(transaction_amount);
     }
 
-    public int getDeal_number() {
+    public int getTransaction_code() {
         return transaction_code;
     }
 
-    public void setDeal_number(int deal_number) {
-        this.transaction_code = deal_number;
+    public void setTransaction_code(int transaction_code) {
+        this.transaction_code = transaction_code;
     }
 
     public String getDate() {
@@ -81,23 +85,26 @@ public class Deal {
     }
 
     // Метод ввода сделки
-    public void inpDeal(Dealership dealership, Deal[] dealsArray) {
+    public void inpDeal(Dealership dealership, Deal[] dealsArray, String[][] carData) {
         Scanner scanner = new Scanner(System.in);
         // Проверка наличия созданного автосалона
-        if (!dealership.isDealershipCreated()) {
-            System.out.println("Ошибка: 'Автосалон отсутствует'!\nПожалуйста, создайте автосалон перед оформлением сделки.");
-            return;
-        }
+        String redColor = "\u001B[31m";
+        String resetColor = "\u001B[0m";
 
-        // Проверка наличия сотрудников
-        if (Dealership.getNumEmployees() == 0) {
-            System.out.println("Ошибка: 'Сотрудники отсутствуют'!\nПожалуйста, добавьте сотрудников перед оформлением сделки.");
-            return;
-        }
+        try {
+            if (!dealership.isDealershipCreated()) {
+                throw new IllegalStateException("Автосалон отсутствует. Пожалуйста, создайте автосалон перед оформлением сделки");
+            }
 
-        // Проверка наличия автомобилей
-        if (Dealership.getNumCars() == 0) {
-            System.out.println("Ошибка: 'Автомобили отсутствуют'!\nПожалуйста, добавьте автомобили перед оформлением сделки.");
+            if (Dealership.getNumEmployees() == 0) {
+                throw new IllegalStateException("Сотрудники отсутствуют. Пожалуйста, добавьте сотрудников перед оформлением сделки");
+            }
+
+            if (Dealership.getNumCars() == 0) {
+                throw new IllegalStateException("Автомобили отсутствуют. Пожалуйста, добавьте автомобили перед оформлением сделки");
+            }
+        } catch (IllegalStateException e) {
+            System.out.println(redColor + "Ошибка: '" + e.getMessage() + "'!" + resetColor); // Красный цвет текста
             return;
         }
 
@@ -119,9 +126,8 @@ public class Deal {
 
         int employeeChoice;
         do {
-            System.out.print("Выберите номер продавца из списка: ");
-            employeeChoice = scanner.nextInt();
-            if (employeeChoice < 1 || employeeChoice > Dealership.getNumEmployees()) {
+            employeeChoice = InpAndCheckedInt("Выберите номер продавца из списка: ");
+            if (employeeChoice == 0 || employeeChoice > Dealership.getNumEmployees()) {
                 System.out.println("Неверная команда...");
             }
         } while (employeeChoice < 1 || employeeChoice > Dealership.getNumEmployees());
@@ -137,9 +143,8 @@ public class Deal {
 
         int carChoice;
         do {
-            System.out.print("Выберите номер автомобиля из списка: ");
-            carChoice = scanner.nextInt();
-            if (carChoice < 1 || carChoice > Dealership.getNumCars()) {
+            carChoice = InpAndCheckedInt("Выберите номер автомобиля из списка: ");
+            if (carChoice > Dealership.getNumCars()) {
                 System.out.println("Неверная команда...");
             }
         } while (carChoice < 1 || carChoice > Dealership.getNumCars());
@@ -157,8 +162,37 @@ public class Deal {
                 break;
             }
         }
+
+        // Добавление марки авто и его цены в массив carData
+        carData[deal_number - 1][0] = String.valueOf(transaction_code);
+        carData[deal_number - 1][1] = dealership.getCars()[carChoice - 1].getBrand_model();
+        carData[deal_number - 1][2] = String.valueOf(transaction_amount * 0.05);
     }
 
+    public static void outProfitDealership(String[][] carData, Dealership dealership) {
+        String redColor = "\u001B[31m";
+        String resetColor = "\u001B[0m";
+        try {
+            if (!dealership.isDealershipCreated()) {
+                throw new IllegalStateException("Автосалон отсутствует. Пожалуйста, создайте автосалон перед добавлением сотрудников");
+            }
+        } catch (IllegalStateException e) {
+            System.out.println(redColor + "Ошибка: '" + e.getMessage() + "'!" + resetColor); // Красный цвет текста
+            return;
+        }
+        System.out.println("   __--Прибыль автосалона--__\nДвумерный массив\n");
+        double total_profit = 0.0;
+        for (int i = 0; i < deal_number; ++i) {
+            System.out.println("Сделка #" + carData[i][0]);
+            System.out.println("Марка: " + carData[i][1]);
+            System.out.println("Прибыль: " + carData[i][2]);
+            double profitDouble = Double.parseDouble(carData[i][2]); // Преобразование в double
+            total_profit += profitDouble; // Сложение с total_profit
+            System.out.println();
+        }
+        System.out.println("Общая прибыль автосалона: " + total_profit);
+        System.out.println();
+    }
 
     // Метод для очистки массива сделок
     public static void clearDealsArray(Deal[] dealsArray) {
@@ -176,15 +210,25 @@ public class Deal {
     }
 
     // Метод для вывода заработка по каждой сделке и общего заработка
-    public static void printProfits(Deal[] dealsArray) {
+    public static void outProfitDealership(Deal[] dealsArray, Dealership dealership) {
+        String redColor = "\u001B[31m";
+        String resetColor = "\u001B[0m";
+        try {
+            if (!dealership.isDealershipCreated()) {
+                throw new IllegalStateException("Автосалон отсутствует. Пожалуйста, создайте автосалон перед добавлением сотрудников");
+            }
+        } catch (IllegalStateException e) {
+            System.out.println(redColor + "Ошибка: '" + e.getMessage() + "'!" + resetColor); // Красный цвет текста
+            return;
+        }
         System.out.println();
-        System.out.println("    __-- Заработок автосалона --__");
+        System.out.println("    __-- Прибыль автосалона --__\nВспомогательный класс");
 
         for (int i = 0; i < deal_number; i++) {
             Deal deal = dealsArray[i];
             if (deal != null) {
                 int profit = CarSaleCalculator.calculateProfit(deal.getTransaction_amount());
-                System.out.println("Cделка #" + deal.getDeal_number() + ": " + profit);
+                System.out.println("Cделка #" + deal.getTransaction_code() + ": " + profit);
                 CarSaleCalculator.addToTotalProfit(deal.getTransaction_amount());
             }
         }
@@ -204,7 +248,7 @@ public class Deal {
         for (int i = 0; i < deal_number; i++) {
             Deal deal = dealsArray[i];
             if (deal != null) {
-                System.out.println("Cделка #" + deal.getDeal_number());
+                System.out.println("Cделка #" + deal.getTransaction_code());
                 System.out.println("Дата сделки: " + deal.getDate());
                 System.out.println("Продавец: " + deal.getEmployee().getFirstName() + " " + deal.getEmployee().getLastName());
                 System.out.println("Покупатель: " + deal.getCustomer().getFirstName() + " " + deal.getCustomer().getLastName());

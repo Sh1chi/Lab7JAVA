@@ -3,8 +3,7 @@ package app_java;
 import java.util.Scanner;
 import java.util.InputMismatchException;
 
-import static app_java.Func.clearingСonsole;
-import static app_java.Func.InpAndCheckedInt;
+import static app_java.Func.*;
 
 
 public class Main {
@@ -16,6 +15,7 @@ public class Main {
         int choice;
         Dealership dealership = new Dealership();
         Deal[] dealsArray = new Deal[MAX_DEAL];
+        String[][] carData = new String[MAX_DEAL][3];
 
         System.out.println("        -- Реализация АТД на языке Java --");
         System.out.println();
@@ -33,7 +33,8 @@ public class Main {
             System.out.println("9 - Вывести полную информацию об автосалоне");
             System.out.println("10 - Вывести историю сделок");
             System.out.println("11 - Очистить историю сделок автосалона");
-            System.out.println("12 - Прибыль автосалона");
+            System.out.println("12 - Прибыль автосалона(Вспомогательный класс)");
+            System.out.println("13 - Прибыль автосалона(Двумерный массив)");
             System.out.println("0 - Выход...\n");
 
             choice = InpAndCheckedInt("Выберите действие: ");
@@ -46,7 +47,7 @@ public class Main {
                 case 2:
                     clearingСonsole();
                     Deal newDeal = new Deal();
-                    newDeal.inpDeal(dealership, dealsArray);
+                    newDeal.inpDeal(dealership, dealsArray, carData);
                     break;
                 case 3:
                     clearingСonsole();
@@ -87,7 +88,11 @@ public class Main {
                     break;
                 case 12:
                     clearingСonsole();
-                    Deal.printProfits(dealsArray);
+                    Deal.outProfitDealership(dealsArray, dealership);
+                    break;
+                case 13:
+                    clearingСonsole();
+                    Deal.outProfitDealership(carData, dealership);
                     break;
                 case 0:
                     System.out.println("Осуществляется выход...");

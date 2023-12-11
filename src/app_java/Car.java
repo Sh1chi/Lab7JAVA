@@ -1,6 +1,7 @@
 package app_java;
 
 import java.util.Scanner;
+import static app_java.Func.InpAndCheckedInt;
 
 public class Car {
     enum TechnicalCondition {
@@ -95,13 +96,13 @@ public class Car {
         System.out.print("Введите страну-производитель: ");
         setCountry(scanner.nextLine());
 
-        System.out.print("Введите год производства: ");
-        setYear(scanner.nextInt());
+        setYear(InpAndCheckedInt("Введите год производства: "));
 
-        System.out.print("Введите цену: ");
-        setPrice(scanner.nextInt());
+        setPrice(InpAndCheckedInt("Введите цену: "));
 
         TechnicalCondition inputCondition = null;
+        String redColor = "\u001B[31m";
+        String resetColor = "\u001B[0m";
         do {
             System.out.print("Введите состояние (NEW, USED, NEEDS_REPAIR, OUT_OF_SERVICE): ");
             String conditionInput = scanner.next();
@@ -109,12 +110,11 @@ public class Car {
             try {
                 inputCondition = TechnicalCondition.valueOf(conditionInput);
             } catch (IllegalArgumentException e) {
-                System.out.println("Недопустимое состояние автомобиля. Попробуйте снова.");
+                System.out.println(redColor + "Ошибка: 'Недопустимое состояние автомобиля'! Попробуйте снова." + resetColor);
             }
         } while (inputCondition == null);
 
-        System.out.print("Введите количество: ");
-        setQuantity(scanner.nextInt());
+        setQuantity(InpAndCheckedInt("Введите количество: "));
 
     }
 

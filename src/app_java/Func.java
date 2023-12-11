@@ -7,47 +7,50 @@ public class Func {
     // Метод для ввода числовых значений с защитой от некорректного ввода
     public static int InpAndCheckedInt(String prompt) {
         Scanner scanner = new Scanner(System.in);
-        int number;
+        String redColor = "\u001B[31m";
+        String resetColor = "\u001B[0m";
 
-        do {
-            System.out.print(prompt);
-            while (!scanner.hasNextInt()) {
-                System.out.println("Ошибка: 'Некорректный ввод'!");
-                System.out.print(prompt);
+        while (true) {
+            try {
+                System.out.print(prompt); // ANSI-код для красного цвета текста
+                int number = scanner.nextInt();
+
+                if (number < 0) {
+                    throw new IllegalArgumentException("\u001B[31mВведено отрицательное число\u001B[0m"); // ANSI-код для сброса цвета текста
+                }
+
+                return number;
+            } catch (IllegalArgumentException e) {
+                String errorMessage = e.getMessage();
+                System.out.println(redColor + "Ошибка: '" + errorMessage + resetColor + redColor + "'!"+ resetColor);
+            } catch (java.util.InputMismatchException e) {
+                System.out.println("\u001B[31mОшибка: 'Некорректный ввод'!\u001B[0m"); // ANSI-код для сброса цвета текста
                 scanner.next(); // Очистка буфера от некорректного ввода
             }
-            number = scanner.nextInt();
-
-            // Добавление проверки на отрицательное число
-            if (number < 0) {
-                System.out.println("Ошибка: 'Введено отрицательное число'!");
-                continue;
-            }
-            break;
-        } while (true);
-
-        return number;
+        }
     }
 
     public static boolean confirmAction(String prompt) {
         Scanner scanner = new Scanner(System.in);
-        String answer;
+        String redColor = "\u001B[31m";
+        String resetColor = "\u001B[0m";
 
-        do {
-            System.out.println(prompt);
-            answer = scanner.nextLine().toLowerCase();
+        while (true) {
+            try {
+                System.out.println(prompt);
+                String answer = scanner.nextLine().toLowerCase();
 
-            if (answer.equals("да")) {
-                return true;  // Возвращаем true при подтверждении
-            } else if (answer.equals("нет")) {
-                return false;  // Возвращаем false при отмене
-            } else {
-                System.out.println("\nОшибка: 'Некорректный ввод'\nПожалуйста, введите 'Да' или 'Нет'.\n");
+                if (answer.equals("да")) {
+                    return true;  // Возвращаем true при подтверждении
+                } else if (answer.equals("нет")) {
+                    return false;  // Возвращаем false при отмене
+                } else {
+                    throw new IllegalArgumentException("'Некорректный ввод'! Пожалуйста, введите 'Да' или 'Нет'.");
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println(redColor + "Ошибка: '" + e.getMessage()  + resetColor);
             }
-
-        } while (!answer.equals("да") && !answer.equals("нет"));
-
-        return false;  // Возвращаем false, если цикл закончится, не достигнув "да" или "нет"
+        }
     }
 
     public static void clearingСonsole(){
@@ -55,6 +58,5 @@ public class Func {
             System.out.println();
         }
     }
-
 
 }

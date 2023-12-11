@@ -1,6 +1,7 @@
 package app_java;
 
 import java.util.Scanner;
+import static app_java.Func.InpAndCheckedInt;
 
 public class Employee extends Person{
     private String position;   // Должность сотрудника
@@ -52,8 +53,7 @@ public class Employee extends Person{
         System.out.print("Введите должность: ");
         setPosition(scanner.nextLine());
 
-        System.out.print("Введите зарплату: ");
-        setSalary(scanner.nextInt());
+        setSalary(InpAndCheckedInt("Введите зарплату: "));
 
     }
 

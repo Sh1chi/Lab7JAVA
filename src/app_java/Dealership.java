@@ -72,18 +72,24 @@ public class Dealership {
         System.out.println("    __-- Создание автосалона --__");
 
         do {
-            // Ввод данных об автосалоне
-            System.out.print("Введите название автосалона: ");
-            name = scanner.nextLine();
-            System.out.print("Введите адрес автосалона: ");
-            address = scanner.nextLine();
+            String redColor = "\u001B[31m";
+            String resetColor = "\u001B[0m";
 
-            if (!isDealershipCreated()){
-                System.out.println("Ошибка: 'Некорректные данные'!");
-                continue;
+            try {
+                // Ввод данных об автосалоне
+                System.out.print("Введите название автосалона: ");
+                name = scanner.nextLine();
+                System.out.print("Введите адрес автосалона: ");
+                address = scanner.nextLine();
+
+                if (!isDealershipCreated()){
+                    throw new IllegalArgumentException("Некорректные данные");
+                }
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println(redColor + "Ошибка: '" + e.getMessage() + "'!" + resetColor); // Красный цвет текста
             }
-            break;
-        }while(true);
+        } while (true);
 
         // Ввод количества сотрудников и создание массива сотрудников
         numEmployees = InpAndCheckedInt("Введите количество сотрудников: ");
@@ -115,8 +121,15 @@ public class Dealership {
 
     // Методы добавления сотрудников и авто
     public void addEmployeesToDealership() {
-        if (!isDealershipCreated()) {
-            System.out.println("Ошибка: 'Автосалон отсутствует'!\nПожалуйста, создайте автосалон перед добавлением сотрудников.");
+        String redColor = "\u001B[31m";
+        String resetColor = "\u001B[0m";
+
+        try {
+            if (!isDealershipCreated()) {
+                throw new IllegalStateException("Автосалон отсутствует. Пожалуйста, создайте автосалон перед добавлением сотрудников");
+            }
+        } catch (IllegalStateException e) {
+            System.out.println(redColor + "Ошибка: '" + e.getMessage() + "'!" + resetColor); // Красный цвет текста
             return;
         }
 
@@ -160,8 +173,15 @@ public class Dealership {
     }
 
     public void addCarsToDealership() {
-        if (!isDealershipCreated()) {
-            System.out.println("Ошибка: 'Автосалон отсутствует'!\nПожалуйста, создайте автосалон перед добавлением автомобилей.");
+        String redColor = "\u001B[31m";
+        String resetColor = "\u001B[0m";
+
+        try {
+            if (!isDealershipCreated()) {
+                throw new IllegalStateException("Автосалон отсутствует. Пожалуйста, создайте автосалон перед добавлением автомобилей");
+            }
+        } catch (IllegalStateException e) {
+            System.out.println(redColor + "Ошибка: '" + e.getMessage() + "'!" + resetColor); // Красный цвет текста
             return;
         }
 
@@ -208,8 +228,15 @@ public class Dealership {
     public void removeEmployeeFromDealership() {
         System.out.print("  -- Удаление сотрудника из базы --\n");
 
-        if (numEmployees == 0) {
-            System.out.println("В дилерском центре отсутствуют сотрудники.");
+        String redColor = "\u001B[31m";
+        String resetColor = "\u001B[0m";
+
+        try {
+            if (numEmployees == 0) {
+                throw new IllegalStateException("В дилерском центре отсутствуют сотрудники");
+            }
+        } catch (IllegalStateException e) {
+            System.out.println(redColor + "Ошибка: '" + e.getMessage() + "'!" + resetColor); // Красный цвет текста
             return;
         }
 
@@ -243,8 +270,15 @@ public class Dealership {
     public void removeCarFromDealership() {
         System.out.print("  -- Удаление авто из базы --\n");
 
-        if (numCars == 0) {
-            System.out.println("В дилерском центре отсутствуют автомобили.");
+        String redColor = "\u001B[31m";
+        String resetColor = "\u001B[0m";
+
+        try {
+            if (numCars == 0) {
+                throw new IllegalStateException("В дилерском центре отсутствуют автомобили");
+            }
+        } catch (IllegalStateException e) {
+            System.out.println(redColor + "Ошибка: '" + e.getMessage() + "'!" + resetColor); // Красный цвет текста
             return;
         }
 
@@ -277,15 +311,22 @@ public class Dealership {
 
     // Методы вывода различной информации об автосалоне
     public void outAllInfoDealership(){
-        System.out.println();
-        if (isDealershipCreated()) {
-            System.out.println("    __-- Автосалон " + name + " --__");
-            System.out.println("по адресу: " + address);
+        String redColor = "\u001B[31m";
+        String resetColor = "\u001B[0m";
+
+        try {
             System.out.println();
-            outEmployeeDealership();
-            outCarDealership();
-        } else {
-            System.out.println("Ошибка: 'Отсутствует название или адрес автосалона'!\nИнформация об автосалоне недоступна.");
+            if (isDealershipCreated()) {
+                System.out.println("    __-- Автосалон " + name + " --__");
+                System.out.println("по адресу: " + address);
+                System.out.println();
+                outEmployeeDealership();
+                outCarDealership();
+            } else {
+                throw new IllegalStateException("Отсутствует название или адрес автосалона. Информация недоступна");
+            }
+        } catch (IllegalStateException e) {
+            System.out.println(redColor + "Ошибка: '" + e.getMessage() + "'!" + resetColor); // Красный цвет текста
         }
     }
 
