@@ -28,18 +28,23 @@ public class Customer extends Person{
     }
 
     // Метод для ввода информации о покупателе
+    // Метод для ввода информации о покупателе
     public void inpCustomer() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Введите имя клиента: ");
-        first_name = scanner.nextLine();
+        String name = scanner.nextLine();
+
+        System.out.print("Введите отчество клиента: ");
+        String patronymic = scanner.nextLine();
+
+        setFirstName(name, patronymic); // Используем перегруженный метод setFirstName
 
         System.out.print("Введите фамилию клиента: ");
         last_name = scanner.nextLine();
 
-        System.out.print("Введите номера телефона: ");
+        System.out.print("Введите номер телефона: ");
         phone_number = scanner.nextLine();
-
     }
 
     // Метод для вывода информации о покупателе

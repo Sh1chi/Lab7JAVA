@@ -45,7 +45,12 @@ public class Employee extends Person{
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Введите имя сотрудника: ");
-        first_name = scanner.nextLine();
+        String name = scanner.nextLine();
+
+        System.out.print("Введите отчество сотрудника: ");
+        String patronymic = scanner.nextLine();
+
+        setFirstName(name, patronymic); // Используем перегруженный метод setFirstName
 
         System.out.print("Введите фамилию сотрудника: ");
         last_name = scanner.nextLine();
@@ -54,7 +59,6 @@ public class Employee extends Person{
         position = scanner.nextLine();
 
         salary = InpAndCheckedInt("Введите зарплату: ");
-
     }
 
     // Метод для ввода информации о сотруднике

@@ -27,9 +27,11 @@ public abstract class Person {
     }
 
     // Метод установки имени человека
-    public void setFirstName(String first_name){
-        this.first_name = first_name;
+    // Перегрузка метода setFirstName для добавления отчества
+    public void setFirstName(String first_name, String patronymic) {
+        this.first_name = first_name + " " + patronymic;
     }
+
     // Метод установки фамилии человека
     public void setLastName(String last_name){
         this.last_name = last_name;
