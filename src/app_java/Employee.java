@@ -15,7 +15,7 @@ public class Employee extends Person{
 
     //Конструтор с параметрами
     public Employee(String first_name, String last_name, String position, int salary) {
-        super(first_name, last_name);
+        super(first_name, last_name); //Вызов конструтора Базового класса
         this.position = position;
         this.salary = salary;
     }

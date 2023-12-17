@@ -12,7 +12,7 @@ public class Customer extends Person{
 
     //Конструтор с параметрами
     public Customer(String first_name, String last_name, String phone_number){
-        super(first_name,last_name);
+        super(first_name,last_name); //Вызов конструтора Базового класса
         this.phone_number = phone_number;
 
     }
