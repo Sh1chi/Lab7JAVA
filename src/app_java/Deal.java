@@ -136,7 +136,7 @@ public class Deal {
 
         // Ввод информации о покупателе
         customer = new Customer();
-        customer.inpCustomer();
+        customer.inpPersonInfo();
 
         // Вывод списка доступных автомобилей
         dealership.outCarsChoice();

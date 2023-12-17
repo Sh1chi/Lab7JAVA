@@ -3,15 +3,17 @@ package app_java;
 import java.util.Scanner;
 import static app_java.Func.InpAndCheckedInt;
 
-public class Employee extends Person{
+public class Employee extends Person implements IPersonInfo {
     private String position;   // Должность сотрудника
     private int salary;        // Зарплата сотрудника
 
     // Конструктор без параметров
-    public Employee(){
+    public Employee() {
         this.position = "";
         this.salary = 0;
-    };
+    }
+
+    ;
 
     //Конструтор с параметрами
     public Employee(String first_name, String last_name, String position, int salary) {
@@ -40,6 +42,28 @@ public class Employee extends Person{
         this.salary = salary;
     }
 
+    // Переопределение метода интерфейса IPersonInfo
+    @Override
+    public void inpPersonInfo() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Введите имя сотрудника: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Введите отчество сотрудника: ");
+        String patronymic = scanner.nextLine();
+
+        setFirstName(name, patronymic); // Используем перегруженный метод setFirstName
+
+        System.out.print("Введите фамилию сотрудника: ");
+        last_name = scanner.nextLine();
+
+        System.out.print("Введите должность: ");
+        position = scanner.nextLine();
+
+        salary = InpAndCheckedInt("Введите зарплату: ");
+    }
+
     // Метод для ввода информации о сотруднике
     public void inputEmployee() {
         Scanner scanner = new Scanner(System.in);
@@ -62,8 +86,8 @@ public class Employee extends Person{
     }
 
     // Метод для ввода информации о сотруднике
-    public void outEmployee(){
-        System.out.println("ФИО: " + first_name + " " +  last_name);
+    public void outEmployee() {
+        System.out.println("ФИО: " + first_name + " " + last_name);
         System.out.println("Должность: " + position);
         System.out.println("Зарплата: " + salary);
     }
@@ -75,5 +99,4 @@ public class Employee extends Person{
                 "\nДолжность: " + position +
                 "\nЗарплата: " + salary;
     }
-
 }

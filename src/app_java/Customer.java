@@ -2,7 +2,9 @@ package app_java;
 
 import java.util.Scanner;
 
-public class Customer extends Person{
+import static app_java.Func.InpAndCheckedInt;
+
+public class Customer extends Person implements IPersonInfo{
     private String phone_number;  // Номер телефона покупателя
 
     // Конструктор без параметров
@@ -27,7 +29,26 @@ public class Customer extends Person{
         return phone_number;
     }
 
-    // Метод для ввода информации о покупателе
+    // Переопределение метода интерфейса IPersonInfo
+    @Override
+    public void inpPersonInfo() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Введите имя клиента: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Введите отчество клиента: ");
+        String patronymic = scanner.nextLine();
+
+        setFirstName(name, patronymic); // Используем перегруженный метод setFirstName
+
+        System.out.print("Введите фамилию клиента: ");
+        last_name = scanner.nextLine();
+
+        System.out.print("Введите номер телефона: ");
+        phone_number = scanner.nextLine();
+    }
+
     // Метод для ввода информации о покупателе
     public void inpCustomer() {
         Scanner scanner = new Scanner(System.in);

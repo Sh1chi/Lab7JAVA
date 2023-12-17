@@ -99,7 +99,7 @@ public class Dealership {
             for (int i = 0; i < numEmployees; ++i) {
                 System.out.println("Сотрудник #" + (i + 1) + ":");
                 employees[i] = new Employee();
-                employees[i].inputEmployee();
+                employees[i].inpPersonInfo();
                 System.out.println();
             }
         }
@@ -157,7 +157,7 @@ public class Dealership {
                 // Ввод данных о сотруднике
                 System.out.println("Сотрудник #" + (i + 1));
                 Employee newEmployee = new Employee();  // Assuming Employee has a default constructor
-                newEmployee.inputEmployee();  // Assuming there's an inputEmployee method in the Employee class
+                newEmployee.inpPersonInfo();  // Assuming there's an inputEmployee method in the Employee class
                 System.out.println();
 
                 // Добавляем нового сотрудника во временный массив
