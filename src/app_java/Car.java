@@ -3,7 +3,7 @@ package app_java;
 import java.util.Scanner;
 import static app_java.Func.InpAndCheckedInt;
 
-public class Car {
+public class Car implements Cloneable{
     enum TechnicalCondition {
         NEW, USED, NEEDS_REPAIR, OUT_OF_SERVICE
     }
@@ -35,6 +35,11 @@ public class Car {
         this.condition = condition;
         this.quantity = quantity;
 
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     //set и get

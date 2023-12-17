@@ -1,10 +1,11 @@
 package app_java;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import static app_java.Func.*;
 
-public class Deal {
+public class Deal implements Cloneable{
     private static int deal_number = 0;
     private int transaction_code;          // Номер сделки
     private String date;              // Дата сделки
@@ -21,6 +22,20 @@ public class Deal {
         this.customer = null;
         this.car = null;
         this.transaction_amount = 0;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    public Deal dealClone() throws CloneNotSupportedException {
+        Deal clonedDeal = (Deal) super.clone();
+        // Клонируем объекты внутри сделки (мелкое клонирование)
+        clonedDeal.employee = (Employee) employee.clone();
+        clonedDeal.customer = (Customer) customer.clone();
+        clonedDeal.car = (Car) car.clone();
+        return clonedDeal;
     }
 
     private static int generateDealNumber() {
@@ -256,6 +271,40 @@ public class Deal {
                 System.out.println("Сумма сделки: " + deal.getTransaction_amount());
                 System.out.println();
             }
+        }
+    }
+
+    public static void cloneDeal(Deal[] dealsArray, Dealership dealership){
+        Scanner scanner = new Scanner(System.in);
+        if (dealership.isDealershipCreated() && deal_number > 0) {
+            System.out.println("    __--Клонирование сделок--__");
+
+            // Выводим список созданных сделок
+            System.out.println("История сделок:");
+            for (int i = 0; i < deal_number; i++) {
+                System.out.println((i + 1) + ". Сделка #" + dealsArray[i].getTransaction_code());
+            }
+
+            int dealChoice;
+            do {
+                dealChoice = InpAndCheckedInt("Выберите номер сделки для клонирования: ");
+                if (dealChoice > deal_number) {
+                    System.out.println("Неверная команда...");
+                }
+            } while (dealChoice < 1 || dealChoice > Dealership.getNumCars());
+
+
+            try {
+                // Клонирование сделки
+                Deal clonedDeal = dealsArray[dealChoice - 1].dealClone();
+                dealsArray[deal_number++] = clonedDeal;
+                System.out.println("Клонирование завершено успешно!");
+            } catch (CloneNotSupportedException e) {
+                System.out.println("\nОшибка при клонировании сделки: " + e.getMessage() + "\n");
+            }
+
+        } else {
+            System.out.println("История сделок пуста...\n");
         }
     }
 

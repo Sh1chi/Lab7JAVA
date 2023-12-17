@@ -3,7 +3,7 @@ package app_java;
 import java.util.Scanner;
 import static app_java.Func.InpAndCheckedInt;
 
-public class Employee extends Person implements IPersonInfo {
+public class Employee extends Person implements IPersonInfo, Cloneable{
     private String position;   // Должность сотрудника
     private int salary;        // Зарплата сотрудника
 
@@ -20,6 +20,11 @@ public class Employee extends Person implements IPersonInfo {
         super(first_name, last_name); //Вызов конструтора Базового класса
         this.position = position;
         this.salary = salary;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     // Метод для получения информации о должности

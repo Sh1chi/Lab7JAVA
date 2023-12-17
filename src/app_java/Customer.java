@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import static app_java.Func.InpAndCheckedInt;
 
-public class Customer extends Person implements IPersonInfo{
+public class Customer extends Person implements IPersonInfo, Cloneable{
     private String phone_number;  // Номер телефона покупателя
 
     // Конструктор без параметров
@@ -17,6 +17,11 @@ public class Customer extends Person implements IPersonInfo{
         super(first_name,last_name); //Вызов конструтора Базового класса
         this.phone_number = phone_number;
 
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     // Метод для установки информации о номере телефона
