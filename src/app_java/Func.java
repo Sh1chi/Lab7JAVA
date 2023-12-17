@@ -59,4 +59,30 @@ public class Func {
         }
     }
 
+    public static void demonstrateShablonClass() {
+        // Создание объекта ShablonTestTransport для автомобиля
+        ShablonTestTransport<String> car = new ShablonTestTransport<>("BMW", 2023, "SUV");
+        String carModel = car.getModel();
+        int carYear = car.getYear();
+        String carType = car.getAdditionalInfo();
+
+        // Создание объекта ShablonTestTransport для грузовика
+        ShablonTestTransport<Double> truck = new ShablonTestTransport<>("Volvo", 2022, 5.0);
+        String truckModel = truck.getModel();
+        int truckYear = truck.getYear();
+        double truckCapacity = truck.getAdditionalInfo();
+
+        // Вывод информации о транспортных средствах
+        System.out.println("Информация об автомобиле:");
+        System.out.println("Модель: " + carModel);
+        System.out.println("Год выпуска: " + carYear);
+        System.out.println("Тип кузова: " + carType);
+        System.out.println();
+
+        System.out.println("Информация о грузовике:");
+        System.out.println("Модель: " + truckModel);
+        System.out.println("Год выпуска: " + truckYear);
+        System.out.println("Грузоподъемность: " + truckCapacity + " тонн");
+    }
+
 }

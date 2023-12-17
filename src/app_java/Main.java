@@ -35,7 +35,8 @@ public class Main {
             System.out.println("11 - Очистить историю сделок автосалона");
             System.out.println("12 - Прибыль автосалона(Вспомогательный класс)");
             System.out.println("13 - Прибыль автосалона(Двумерный массив)");
-            System.out.println("14 - Клонирование");
+            System.out.println("14 - Клонирование сделок");
+            System.out.println("15 - Демонстрация работы шаблона класса ShablonTestTransport");
             System.out.println("0 - Выход...\n");
 
             choice = InpAndCheckedInt("Выберите действие: ");
@@ -98,6 +99,10 @@ public class Main {
                 case 14:
                     clearingСonsole();
                     Deal.cloneDeal(dealsArray, dealership);
+                    break;
+                case 15:
+                    clearingСonsole();
+                    demonstrateShablonClass();
                     break;
                 case 0:
                     System.out.println("Осуществляется выход...");
