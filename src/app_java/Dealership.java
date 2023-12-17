@@ -338,7 +338,7 @@ public class Dealership {
             System.out.println("    __-- Сотрудники автосалона " + name + " --__");
             for (int i = 0; i < numEmployees; ++i) {
                 System.out.println("Сотрудник #" + (i + 1) + ":");
-                employees[i].outEmployee();
+                System.out.println(employees[i].toString()); // Выводит информацию о сотруднике через toString
                 System.out.println();
             }
         }
@@ -352,7 +352,7 @@ public class Dealership {
             System.out.println("    __-- Автомобили автосалона " + name + " --__");
             for (int i = 0; i < numCars; ++i) {
                 System.out.println("Автомобиль #" + (i + 1) + ":");
-                cars[i].outCar();
+                System.out.println(cars[i].toString()); // Выводит информацию о сотруднике через toString
                 System.out.println();
             }
         }

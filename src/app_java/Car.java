@@ -127,4 +127,15 @@ public class Car {
         System.out.println("Техническое состояние: " + getCondition());
         System.out.println("Количество: " + getQuantity());
     }
+
+    // Метод toString
+    @Override
+    public String toString() {
+        return "Марка и модель авто: " + getBrand_model() +
+                "\nСтрана-производитель: " + getCountry() +
+                "\nГод производства: " + getYear() +
+                "\nЦена: " + getPrice() +
+                "\nТехническое состояние: " + getCondition() +
+                "\nКоличество: " + getQuantity();
+    }
 }

@@ -49,8 +49,14 @@ public class Customer extends Person{
 
     // Метод для вывода информации о покупателе
     public void outCustomer() {
-        System.out.println("Покупатель:" + first_name + " " + last_name);
+        System.out.println("Покупатель ФИО:" + first_name + " " + last_name);
         System.out.println("Номер телефона: " + phone_number);
+    }
+
+    @Override
+    public String toString() {
+        return "Покупатель ФИО: " + first_name + " " + last_name +
+                "\nНомер телефона: " + phone_number;
     }
 
 

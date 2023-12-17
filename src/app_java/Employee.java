@@ -63,10 +63,17 @@ public class Employee extends Person{
 
     // Метод для ввода информации о сотруднике
     public void outEmployee(){
-        System.out.println("Имя и фамилия: " + first_name + " " +  last_name);
+        System.out.println("ФИО: " + first_name + " " +  last_name);
         System.out.println("Должность: " + position);
         System.out.println("Зарплата: " + salary);
     }
 
+    // Метод toString
+    @Override
+    public String toString() {
+        return "ФИО: " + first_name + " " + last_name +
+                "\nДолжность: " + position +
+                "\nЗарплата: " + salary;
+    }
 
 }
