@@ -45,23 +45,23 @@ public class Employee extends Person{
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Введите имя сотрудника: ");
-        setFirstName(scanner.nextLine());
+        first_name = scanner.nextLine();
 
         System.out.print("Введите фамилию сотрудника: ");
-        setLastName(scanner.nextLine());
+        last_name = scanner.nextLine();
 
         System.out.print("Введите должность: ");
-        setPosition(scanner.nextLine());
+        position = scanner.nextLine();
 
-        setSalary(InpAndCheckedInt("Введите зарплату: "));
+        salary = InpAndCheckedInt("Введите зарплату: ");
 
     }
 
     // Метод для ввода информации о сотруднике
     public void outEmployee(){
-        System.out.println("Имя и фамилия: " + getFirstName() + " " +  getLastName());
-        System.out.println("Должность: " + getPosition());
-        System.out.println("Зарплата: " + getSalary());
+        System.out.println("Имя и фамилия: " + first_name + " " +  last_name);
+        System.out.println("Должность: " + position);
+        System.out.println("Зарплата: " + salary);
     }
 
 

@@ -32,20 +32,20 @@ public class Customer extends Person{
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Введите имя клиента: ");
-        setFirstName(scanner.nextLine());
+        first_name = scanner.nextLine();
 
         System.out.print("Введите фамилию клиента: ");
-        setLastName(scanner.nextLine());
+        last_name = scanner.nextLine();
 
         System.out.print("Введите номера телефона: ");
-        setPhone_number(scanner.nextLine());
+        phone_number = scanner.nextLine();
 
     }
 
     // Метод для вывода информации о покупателе
     public void outCustomer() {
-        System.out.println("Покупатель:" + getFirstName() + " " + getLastName());
-        System.out.println("Номер телефона: " + getPhone_number());
+        System.out.println("Покупатель:" + first_name + " " + last_name);
+        System.out.println("Номер телефона: " + phone_number);
     }
 
 

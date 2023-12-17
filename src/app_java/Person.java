@@ -1,8 +1,8 @@
 package app_java;
 
 public abstract class Person {
-    private String first_name; // Имя человека
-    private String last_name; // Фамилия человека
+    protected String first_name; // Имя человека
+    protected String last_name; // Фамилия человека
 
     // Конструктор без параметров
     public Person(){
