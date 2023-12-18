@@ -1,6 +1,7 @@
 package app_java;
 
 import java.util.Scanner;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 
 import static app_java.Func.*;
@@ -14,7 +15,7 @@ public class Main {
         boolean exit_programm = false;
         int choice;
         Dealership dealership = new Dealership();
-        Deal[] dealsArray = new Deal[MAX_DEAL];
+        ArrayList<Deal> dealsList = new ArrayList<>(); // Используем ArrayList для хранения сделок
         String[][] carData = new String[MAX_DEAL][3];
 
         System.out.println("        -- Реализация АТД на языке Java --");
@@ -49,7 +50,7 @@ public class Main {
                 case 2:
                     clearingСonsole();
                     Deal newDeal = new Deal();
-                    newDeal.inpDeal(dealership, dealsArray, carData);
+                    newDeal.inpDeal(dealership, dealsList, carData);
                     break;
                 case 3:
                     clearingСonsole();
@@ -82,15 +83,15 @@ public class Main {
                 case 10:
                     clearingСonsole();
                     Deal dealPrinter = new Deal();
-                    dealPrinter.outAllDeals(dealsArray);
+                    dealPrinter.outAllDeals(dealsList);
                     break;
                 case 11:
                     clearingСonsole();
-                    Deal.clearDealsArray(dealsArray);
+                    Deal.clearDealsList(dealsList);
                     break;
                 case 12:
                     clearingСonsole();
-                    Deal.outProfitDealership(dealsArray, dealership);
+                    Deal.outProfitDealership(dealsList, dealership);
                     break;
                 case 13:
                     clearingСonsole();
@@ -98,7 +99,7 @@ public class Main {
                     break;
                 case 14:
                     clearingСonsole();
-                    Deal.cloneDeal(dealsArray, dealership);
+                    Deal.cloneDeal(dealsList, dealership);
                     break;
                 case 15:
                     clearingСonsole();

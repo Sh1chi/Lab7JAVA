@@ -2,7 +2,7 @@ package app_java;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
+import java.util.ArrayList;
 import static app_java.Func.*;
 
 public class Deal implements Cloneable{
@@ -100,9 +100,8 @@ public class Deal implements Cloneable{
     }
 
     // Метод ввода сделки
-    public void inpDeal(Dealership dealership, Deal[] dealsArray, String[][] carData) {
+    public void inpDeal(Dealership dealership, ArrayList<Deal> dealsList, String[][] carData) {
         Scanner scanner = new Scanner(System.in);
-        // Проверка наличия созданного автосалона
         String redColor = "\u001B[31m";
         String resetColor = "\u001B[0m";
 
@@ -119,26 +118,23 @@ public class Deal implements Cloneable{
                 throw new IllegalStateException("Автомобили отсутствуют. Пожалуйста, добавьте автомобили перед оформлением сделки");
             }
         } catch (IllegalStateException e) {
-            System.out.println(redColor + "Ошибка: '" + e.getMessage() + "'!" + resetColor); // Красный цвет текста
+            System.out.println(redColor + "Ошибка: '" + e.getMessage() + "'!" + resetColor);
             return;
         }
 
         System.out.println();
         System.out.println("    -- Производится оформление договора купли-продажи авто --");
 
-        // Используйте статический метод для генерации уникального номера сделки
         generateDealNumber();
 
         System.out.print("Введите код сделки: ");
         transaction_code = scanner.nextInt();
-        scanner.nextLine(); // Очистить буфер после ввода числа
+        scanner.nextLine();
 
         System.out.print("Введите дату сделки: ");
         date = scanner.nextLine();
 
-        // Вывод списка доступных продавцов
         dealership.outEmployeesChoice();
-
         int employeeChoice;
         do {
             employeeChoice = InpAndCheckedInt("Выберите номер продавца из списка: ");
@@ -149,11 +145,9 @@ public class Deal implements Cloneable{
 
         employee = dealership.getEmployees()[employeeChoice - 1];
 
-        // Ввод информации о покупателе
         customer = new Customer();
         customer.inpPersonInfo();
 
-        // Вывод списка доступных автомобилей
         dealership.outCarsChoice();
 
         int carChoice;
@@ -168,17 +162,10 @@ public class Deal implements Cloneable{
 
         System.out.print("Введите сумму сделки: ");
         transaction_amount = scanner.nextInt();
-        scanner.nextLine(); // Очистить буфер после ввода числа
+        scanner.nextLine();
 
-        // Добавление сделки в массив сделок
-        for (int i = 0; i < deal_number; i++) {
-            if (dealsArray[i] == null) {
-                dealsArray[i] = this;
-                break;
-            }
-        }
+        dealsList.add(this);
 
-        // Добавление марки авто и его цены в массив carData
         carData[deal_number - 1][0] = String.valueOf(transaction_code);
         carData[deal_number - 1][1] = dealership.getCars()[carChoice - 1].getBrand_model();
         carData[deal_number - 1][2] = String.valueOf(transaction_amount * 0.05);
@@ -210,22 +197,19 @@ public class Deal implements Cloneable{
     }
 
     // Метод для очистки массива сделок
-    public static void clearDealsArray(Deal[] dealsArray) {
+    public static void clearDealsList(ArrayList<Deal> dealsList) {
         if (!confirmAction("Вы точно хотите удалить историю сделок? (Да/Нет)")) {
             System.out.println("Удаление отменено.");
             return;
         }
 
-        for (int i = 0; i < deal_number; i++) {
-            dealsArray[i] = null;
-        }
-        deal_number = 0;
+        dealsList.clear();
         CarSaleCalculator.setTotalProfit(0);
         System.out.println("История сделок очищена.");
     }
 
     // Метод для вывода заработка по каждой сделке и общего заработка
-    public static void outProfitDealership(Deal[] dealsArray, Dealership dealership) {
+    public static void outProfitDealership(ArrayList<Deal> dealsList, Dealership dealership) {
         String redColor = "\u001B[31m";
         String resetColor = "\u001B[0m";
         try {
@@ -237,32 +221,29 @@ public class Deal implements Cloneable{
             return;
         }
         System.out.println();
-        System.out.println("    __-- Прибыль автосалона --__\nВспомогательный класс");
+        System.out.println("    __-- Прибыль автосалона --__(Вспомогательный класс)");
 
-        for (int i = 0; i < deal_number; i++) {
-            Deal deal = dealsArray[i];
-            if (deal != null) {
-                int profit = CarSaleCalculator.calculateProfit(deal.getTransaction_amount());
-                System.out.println("Cделка #" + deal.getTransaction_code() + ": " + profit);
-                CarSaleCalculator.addToTotalProfit(deal.getTransaction_amount());
-            }
+        int totalProfit = 0;
+        for (Deal deal : dealsList) {
+            int profit = CarSaleCalculator.calculateProfit(deal.getTransaction_amount());
+            System.out.println("Cделка #" + deal.getTransaction_code() + ": " + profit);
+            totalProfit += profit;
+            CarSaleCalculator.addToTotalProfit(deal.getTransaction_amount());
         }
-        int total_profit = CarSaleCalculator.getTotalProfit();
+
         System.out.println();
-        System.out.println("Общий заработок автосалона: " + total_profit);
+        System.out.println("Общий заработок автосалона: " + totalProfit);
     }
 
     // Метод вывода сделки
-    public void outAllDeals(Deal[] dealsArray) {
+    public void outAllDeals(ArrayList<Deal> dealsList) {
         System.out.println();
         System.out.println("    __-- Договоры купли-продажи авто --__");
 
-        if (deal_number == 0){
+        if (dealsList.isEmpty()) {
             System.out.println("История сделок отсутствует.");
-        }
-        for (int i = 0; i < deal_number; i++) {
-            Deal deal = dealsArray[i];
-            if (deal != null) {
+        } else {
+            for (Deal deal : dealsList) {
                 System.out.println("Cделка #" + deal.getTransaction_code());
                 System.out.println("Дата сделки: " + deal.getDate());
                 System.out.println("Продавец: " + deal.getEmployee().getFirstName() + " " + deal.getEmployee().getLastName());
@@ -274,30 +255,30 @@ public class Deal implements Cloneable{
         }
     }
 
-    public static void cloneDeal(Deal[] dealsArray, Dealership dealership){
+
+    public static void cloneDeal(ArrayList<Deal> dealsList, Dealership dealership) {
         Scanner scanner = new Scanner(System.in);
-        if (dealership.isDealershipCreated() && deal_number > 0) {
+        if (dealership.isDealershipCreated() && !dealsList.isEmpty()) {
             System.out.println("    __--Клонирование сделок--__");
 
             // Выводим список созданных сделок
             System.out.println("История сделок:");
-            for (int i = 0; i < deal_number; i++) {
-                System.out.println((i + 1) + ". Сделка #" + dealsArray[i].getTransaction_code());
+            for (int i = 0; i < dealsList.size(); i++) {
+                System.out.println((i + 1) + ". Сделка #" + dealsList.get(i).getTransaction_code());
             }
 
             int dealChoice;
             do {
                 dealChoice = InpAndCheckedInt("Выберите номер сделки для клонирования: ");
-                if (dealChoice > deal_number) {
+                if (dealChoice > dealsList.size()) {
                     System.out.println("Неверная команда...");
                 }
-            } while (dealChoice < 1 || dealChoice > Dealership.getNumCars());
-
+            } while (dealChoice < 1 || dealChoice > dealsList.size());
 
             try {
                 // Клонирование сделки
-                Deal clonedDeal = dealsArray[dealChoice - 1].dealClone();
-                dealsArray[deal_number++] = clonedDeal;
+                Deal clonedDeal = (Deal) dealsList.get(dealChoice - 1).clone();
+                dealsList.add(clonedDeal);
                 System.out.println("Клонирование завершено успешно!");
             } catch (CloneNotSupportedException e) {
                 System.out.println("\nОшибка при клонировании сделки: " + e.getMessage() + "\n");
