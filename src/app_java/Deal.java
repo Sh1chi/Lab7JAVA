@@ -3,6 +3,7 @@ package app_java;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Comparator;
 import static app_java.Func.*;
 
 public class Deal implements Cloneable{
@@ -243,6 +244,10 @@ public class Deal implements Cloneable{
         if (dealsList.isEmpty()) {
             System.out.println("История сделок отсутствует.");
         } else {
+            // Сортировка списка сделок по transaction_code
+            dealsList.sort(Comparator.comparingInt(Deal::getTransaction_code));
+
+            // Вывод отсортированных сделок
             for (Deal deal : dealsList) {
                 System.out.println("Cделка #" + deal.getTransaction_code());
                 System.out.println("Дата сделки: " + deal.getDate());
