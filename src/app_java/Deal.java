@@ -255,6 +255,44 @@ public class Deal implements Cloneable{
         }
     }
 
+    public static void findAndOutputDealByTransactionCode(ArrayList<Deal> dealsList) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("    __--Поиск сделки--__");
+        System.out.print("\nВведите код сделки: #");
+
+        int transactionCode;
+        try {
+            transactionCode = scanner.nextInt();
+            scanner.nextLine(); // Чистим буфер
+            if (transactionCode <= 0) {
+                System.out.println("Ошибка: Введите корректный код сделки (больше 0)");
+                return;
+            }
+        } catch (Exception e) {
+            System.out.println("Ошибка: 'Некорректный ввод'");
+            return;
+        }
+
+        boolean dealFound = false;
+        for (Deal deal : dealsList) {
+            if (deal.getTransaction_code() == transactionCode) {
+                // Сделка найдена, выводим информацию
+                System.out.println("\nCделка #" + deal.getTransaction_code());
+                System.out.println("Дата сделки: " + deal.getDate());
+                System.out.println("Продавец: " + deal.getEmployee().getFirstName() + " " + deal.getEmployee().getLastName());
+                System.out.println("Покупатель: " + deal.getCustomer().getFirstName() + " " + deal.getCustomer().getLastName());
+                System.out.println("Проданный автомобиль: " + deal.getCar().getBrand_model());
+                System.out.println("Сумма сделки: " + deal.getTransaction_amount());
+                System.out.println();
+                dealFound = true;
+                break;
+            }
+        }
+
+        if (!dealFound) {
+            System.out.println("Сделка с кодом #" + transactionCode + " не найдена.");
+        }
+    }
 
     public static void cloneDeal(ArrayList<Deal> dealsList, Dealership dealership) {
         Scanner scanner = new Scanner(System.in);
