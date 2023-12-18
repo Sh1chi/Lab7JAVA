@@ -38,6 +38,7 @@ public class Main {
             System.out.println("13 - Прибыль автосалона(Двумерный массив)");
             System.out.println("14 - Клонирование сделок");
             System.out.println("15 - Демонстрация работы шаблона класса ShablonTestTransport");
+            System.out.println("16 - Поиск сделки");
             System.out.println("0 - Выход...\n");
 
             choice = InpAndCheckedInt("Выберите действие: ");
