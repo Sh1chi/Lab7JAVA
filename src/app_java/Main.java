@@ -105,6 +105,10 @@ public class Main {
                     clearingСonsole();
                     demonstrateShablonClass();
                     break;
+                case 16:
+                    clearingСonsole();
+                    Deal.findAndOutputDealByTransactionCode(dealsList);
+                    break;
                 case 0:
                     System.out.println("Осуществляется выход...");
                     exit_programm = true;
